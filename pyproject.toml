@@ -1,57 +1,103 @@
 [project]
 name = "9star"
 version = "0.1.0"
-description = "Add your description here"
+description = "9Star backend application"
 readme = "README.md"
 requires-python = ">=3.13"
+
 dependencies = [
-    "celery>=5.4",
+    # Django
     "django>=5.1,<5.2",
-    "django-celery-beat>=2.7",
-    "django-celery-results>=2.5",
     "django-cors-headers>=4.4",
     "django-environ>=0.11",
     "django-filter>=24.3",
+
+    # Django REST Framework
     "djangorestframework>=3.15,<3.16",
     "djangorestframework-simplejwt>=5.5.1",
     "drf-spectacular>=0.27",
-    "gunicorn>=23.0",
+
+    # Celery
+    "celery>=5.4",
+    "django-celery-beat>=2.7",
+    "django-celery-results>=2.5",
+
+    # Database
     "psycopg[binary]>=3.2",
+
+    # Redis
     "redis>=5.0",
-    "sentry-sdk>=2.14",
+
+    # Production server
+    "gunicorn>=23.0",
+
+    # Static files
     "whitenoise>=6.7",
+
+    # Monitoring
+    "sentry-sdk>=2.14",
 ]
 
 [dependency-groups]
 dev = [
+    # Django development
     "django-debug-toolbar>=4.4",
     "django-extensions>=3.2",
+
+    # Type checking
     "django-stubs[compatible-mypy]>=5.1",
     "djangorestframework-stubs[compatible-mypy]>=3.15",
+    "mypy>=1.11",
+
+    # Testing
     "factory-boy>=3.3",
     "faker>=30.1",
-    "ipdb>=0.13",
-    "mypy>=1.11",
-    "pre-commit>=3.8",
     "pytest>=8.3",
     "pytest-cov>=5.0",
     "pytest-django>=4.9",
     "pytest-xdist>=3.6",
+
+    # Debugging
+    "ipdb>=0.13",
+
+    # Code quality
+    "pre-commit>=3.8",
     "ruff>=0.6.9",
 ]
 
 [tool.uv]
 package = false
 
+
+# ============================================================
+# Ruff
+# ============================================================
+
 [tool.ruff]
-target-version = "py312"
+target-version = "py313"
 line-length = 100
-extend-exclude = ["migrations", ".venv"]
+extend-exclude = [
+    "migrations",
+    ".venv",
+]
 
 [tool.ruff.lint]
 select = [
-    "E", "F", "W", "I", "N", "UP", "B", "C4", "DTZ", "T20", "SIM", "DJ", "RUF",
+    "E",
+    "F",
+    "W",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "C4",
+    "DTZ",
+    "T20",
+    "SIM",
+    "DJ",
+    "RUF",
 ]
+
 ignore = [
     "DJ001",
     "RUF012",
@@ -59,21 +105,43 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["apps", "config"]
+known-first-party = [
+    "apps",
+    "config",
+]
 
 [tool.ruff.lint.per-file-ignores]
-"**/tests/*" = ["S101"]
-"**/settings/*" = ["F403", "F405"]
+"**/tests/*" = [
+    "S101",
+]
+
+"**/settings/*" = [
+    "F403",
+    "F405",
+]
 
 [tool.ruff.format]
 quote-style = "double"
 docstring-code-format = true
 
+
+# ============================================================
+# MyPy
+# ============================================================
+
 [tool.mypy]
-python_version = "3.12"
-plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+python_version = "3.13"
+plugins = [
+    "mypy_django_plugin.main",
+    "mypy_drf_plugin.main",
+]
+
 mypy_path = "."
-exclude = ["migrations/"]
+
+exclude = [
+    "migrations/",
+]
+
 ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = false
@@ -82,25 +150,60 @@ warn_redundant_casts = true
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["*.migrations.*"]
+module = [
+    "*.migrations.*",
+]
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = ["*.tests.*"]
+module = [
+    "*.tests.*",
+]
 ignore_errors = true
 
+
+# ============================================================
+# Django Stubs
+# ============================================================
+
 [tool.django-stubs]
-django_settings_module = "config.settings"
+django_settings_module = "config.django.local"
+
+
+# ============================================================
+# Pytest
+# ============================================================
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
-python_files = ["tests.py", "test_*.py"]
+DJANGO_SETTINGS_MODULE = "config.django.local"
+python_files = [
+    "tests.py",
+    "test_*.py",
+]
 addopts = "-ra --reuse-db"
-filterwarnings = ["ignore::DeprecationWarning"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+
+# ============================================================
+# Coverage
+# ============================================================
 
 [tool.coverage.run]
-source = ["apps"]
-omit = ["*/migrations/*", "*/tests/*", "manage.py"]
+source = [
+    "apps",
+]
+
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "manage.py",
+]
 
 [tool.coverage.report]
-exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

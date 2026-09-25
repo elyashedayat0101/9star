@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from .managers import UserManager
-
 from apps.core.models import TimestampedModel
+
+from .managers import UserManager
+from .validators import phone_number_validator
 
 
 # Create your models here.
@@ -13,6 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         unique=True,
         db_index=True,
         verbose_name='شماره تماس',
+        validators=[phone_number_validator]
     )
 
     is_admin = models.BooleanField(
@@ -45,9 +47,3 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
 
     def has_module_perms(self, app_label):
         return True
-
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_admin
