@@ -13,8 +13,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         max_length=11,
         unique=True,
         db_index=True,
-        verbose_name='شماره تماس',
-        validators=[phone_number_validator]
+        verbose_name="شماره تماس",
+        validators=[phone_number_validator],
     )
 
     is_admin = models.BooleanField(
@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         verbose_name="فعال؟",
     )
 
-    USERNAME_FIELD = 'phone_number'
+    USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = []
 
     objects = UserManager()

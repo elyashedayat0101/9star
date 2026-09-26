@@ -7,6 +7,7 @@ class UserManager(BaseUserManager):
     Only contains what Django needs (create_user / create_superuser).
     Business logic goes into services.
     """
+
     use_in_migrations = True
 
     def create_user(self, phone_number, password=None):

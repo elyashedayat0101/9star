@@ -19,7 +19,10 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 X_FRAME_OPTIONS = "DENY"
 
 # WhiteNoise for static files
-MIDDLEWARE = ["whitenoise.middleware.WhiteNoiseMiddleware"] + MIDDLEWARE
+MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    *MIDDLEWARE,
+]
 
 # Email (optional - configure later)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

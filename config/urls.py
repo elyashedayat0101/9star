@@ -16,7 +16,6 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-
     # JWT endpoints
     path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -27,5 +26,6 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns = [
-                      path("__debug__/", include(debug_toolbar.urls)),
-                  ] + urlpatterns
+        path("__debug__/", include(debug_toolbar.urls)),
+        *urlpatterns,
+    ]
